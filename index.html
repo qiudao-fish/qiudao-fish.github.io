@@ -6,20 +6,20 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>µØÀí¶¨Î»API</h1>
+    <h1>åœ°ç†å®šä½API</h1>
     <hr>
     <div>
-        <button id="btn" onclick="process()">¿ªÊ¼¼ÇÂ¼</button>
-        <button onclick="stop()">Í£Ö¹»ñÈ¡Î»ÖÃ</button>
+        <button id="btn" onclick="process()">å¼€å§‹è®°å½•</button>
+        <button onclick="stop()">åœæ­¢è·å–ä½ç½®</button>
     </div>
     <div id="detail">
-        µØÀíÎ»ÖÃĞÅÏ¢»áÏÔÊ¾ÔÚÕâÀï
+        åœ°ç†ä½ç½®ä¿¡æ¯ä¼šæ˜¾ç¤ºåœ¨è¿™é‡Œ
     </div>
     <script src="http://api.map.baidu.com/getscript?v=2.0&ak=w8iscpj5vrApP7BVsPz6LI0ZInD6mjkJ">
         var detail = document.getElementById("detail");
         var watchID;
         if(!navigator.geolocation){
-            detail.innerHTML = "¶Ô²»Æğ£¬ÄúµÄä¯ÀÀÆ÷²»Ö§³ÖHTML5µØÀí¶¨Î»API";
+            detail.innerHTML = "å¯¹ä¸èµ·ï¼Œæ‚¨çš„æµè§ˆå™¨ä¸æ”¯æŒHTML5åœ°ç†å®šä½API";
                 
             }
         function start(){
@@ -27,34 +27,34 @@
         }
         function stop(){
             navigator.geolocation.clearWatch(watchID);
-            detail.innerHTML += "ÊµÊ±¸üĞÂÎ»ÖÃÒÑÍ£Ö¹¡£<br><br>";
+            detail.innerHTML += "å®æ—¶æ›´æ–°ä½ç½®å·²åœæ­¢ã€‚<br><br>";
         }
         function showPostion(position){
-            var content = "¶¨Î»ĞÅÏ¢ÈçÏÂ£º<br>";
+            var content = "å®šä½ä¿¡æ¯å¦‚ä¸‹ï¼š<br>";
             var now = new Date();
-            content += "±¾´Î¸üĞÂÊ±¼ä" + now.toLocaleString() + "<br>";
-            content += "Î³¶È£º" + position.coords.latitude + "<br>";
-            content += "¾­¶È£º" + position.coords.longitude + "<br>";
-            // content += "Î»ÖÃ¾«È·¶È£º" + position.coords.accuracy + "<br>";
-            // content += "º£°Î£º" + position.coords.altitude + "Ã×<br>";
-            // content += "º£°Î¾«¶È£º" + position.coords.altitudeAccuracy + "<br>";
-            // content += "·½Ïò£º" + position.coords.heading + "<br>";
-            // content += "ËÙ¶È£º" + position.coords.speed + "m/s";
+            content += "æœ¬æ¬¡æ›´æ–°æ—¶é—´" + now.toLocaleString() + "<br>";
+            content += "çº¬åº¦ï¼š" + position.coords.latitude + "<br>";
+            content += "ç»åº¦ï¼š" + position.coords.longitude + "<br>";
+            // content += "ä½ç½®ç²¾ç¡®åº¦ï¼š" + position.coords.accuracy + "<br>";
+            // content += "æµ·æ‹”ï¼š" + position.coords.altitude + "ç±³<br>";
+            // content += "æµ·æ‹”ç²¾åº¦ï¼š" + position.coords.altitudeAccuracy + "<br>";
+            // content += "æ–¹å‘ï¼š" + position.coords.heading + "<br>";
+            // content += "é€Ÿåº¦ï¼š" + position.coords.speed + "m/s";
             detail.innerHTML += content;
         }
         function showError(error){
             switch(error.code){
                 case error.PERMISSION_DENIED:
-                    detail.innerHTML = "ÓÃ»§¾Ü¾øÁËµØÀí¶¨Î»µÄÇëÇó¡£";
+                    detail.innerHTML = "ç”¨æˆ·æ‹’ç»äº†åœ°ç†å®šä½çš„è¯·æ±‚ã€‚";
                     break;
                 case error.POSTION_UNAVAILABLE:
-                    detail.innerHTML = "Î»ÖÃĞÅÏ¢²»¿ÉÓÃ¡£";
+                    detail.innerHTML = "ä½ç½®ä¿¡æ¯ä¸å¯ç”¨ã€‚";
                     break;
                 case error.TIMEOUT:
-                    detail.innerHTML = "ÇëÇó³¬Ê±¡£";
+                    detail.innerHTML = "è¯·æ±‚è¶…æ—¶ã€‚";
                     break;
                 case error.UNKNOWN_ERROR:
-                    detail.innerHTML = "Î´Öª´íÎó·¢Éú¡£";
+                    detail.innerHTML = "æœªçŸ¥é”™è¯¯å‘ç”Ÿã€‚";
                     break;
             }
         }
@@ -63,16 +63,16 @@
             var now = new Date();
             var d1, d2;
             var m1, m2;
-            if(btn.innerHTML == "¿ªÊ¼¼ÇÂ¼"){
+            if(btn.innerHTML == "å¼€å§‹è®°å½•"){
                 start();
-                btn.innerHTML = "Í£Ö¹¼ÇÂ¼";
+                btn.innerHTML = "åœæ­¢è®°å½•";
                 d1 = now.toLocaleString();
-            }else if(btn.innerHTML == "Í£Ö¹¼ÇÂ¼"){
+            }else if(btn.innerHTML == "åœæ­¢è®°å½•"){
                 stop();
-                btn.innerHTML = "¿ªÊ¼¼ÇÂ¼";
+                btn.innerHTML = "å¼€å§‹è®°å½•";
                 d2 = now.toLocaleString();
-                detail.innerHTML += "¿ªÊ¼ÔË¶¯Ê±¼ä£º" + d1 + "<br>";
-                detail.innerHTML += "½áÊøÔË¶¯Ê±¼ä£º" + d2 + "<br>";
+                detail.innerHTML += "å¼€å§‹è¿åŠ¨æ—¶é—´ï¼š" + d1 + "<br>";
+                detail.innerHTML += "ç»“æŸè¿åŠ¨æ—¶é—´ï¼š" + d2 + "<br>";
             }
         }
         var options = {
