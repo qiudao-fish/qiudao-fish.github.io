@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="gbk">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>地理定位API</h1>
+    <hr>
+    <div>
+        <button id="btn" onclick="process()">开始记录</button>
+        <button onclick="stop()">停止获取位置</button>
+    </div>
+    <div id="detail">
+        地理位置信息会显示在这里
+    </div>
+    <script src="http://api.map.baidu.com/getscript?v=2.0&ak=w8iscpj5vrApP7BVsPz6LI0ZInD6mjkJ">
+        var detail = document.getElementById("detail");
+        var watchID;
+        if(!navigator.geolocation){
+            detail.innerHTML = "对不起，您的浏览器不支持HTML5地理定位API";
+                
+            }
+        function start(){
+            watchID = navigator.geolocation.watchPosition(showPostion, showError, options);
+        }
+        function stop(){
+            navigator.geolocation.clearWatch(watchID);
+            detail.innerHTML += "实时更新位置已停止。<br><br>";
+        }
+        function showPostion(position){
+            var content = "定位信息如下：<br>";
+            var now = new Date();
+            content += "本次更新时间" + now.toLocaleString() + "<br>";
+            content += "纬度：" + position.coords.latitude + "<br>";
+            content += "经度：" + position.coords.longitude + "<br>";
+            // content += "位置精确度：" + position.coords.accuracy + "<br>";
+            // content += "海拔：" + position.coords.altitude + "米<br>";
+            // content += "海拔精度：" + position.coords.altitudeAccuracy + "<br>";
+            // content += "方向：" + position.coords.heading + "<br>";
+            // content += "速度：" + position.coords.speed + "m/s";
+            detail.innerHTML += content;
+        }
+        function showError(error){
+            switch(error.code){
+                case error.PERMISSION_DENIED:
+                    detail.innerHTML = "用户拒绝了地理定位的请求。";
+                    break;
+                case error.POSTION_UNAVAILABLE:
+                    detail.innerHTML = "位置信息不可用。";
+                    break;
+                case error.TIMEOUT:
+                    detail.innerHTML = "请求超时。";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    detail.innerHTML = "未知错误发生。";
+                    break;
+            }
+        }
+        function process(){
+            var btn = document.getElementById("btn");
+            var now = new Date();
+            var d1, d2;
+            var m1, m2;
+            if(btn.innerHTML == "开始记录"){
+                start();
+                btn.innerHTML = "停止记录";
+                d1 = now.toLocaleString();
+            }else if(btn.innerHTML == "停止记录"){
+                stop();
+                btn.innerHTML = "开始记录";
+                d2 = now.toLocaleString();
+                detail.innerHTML += "开始运动时间：" + d1 + "<br>";
+                detail.innerHTML += "结束运动时间：" + d2 + "<br>";
+            }
+        }
+        var options = {
+            enableHighAccuracy : true,
+            maximumAge : 2000,
+            timeout : 2000
+        };
+    </script>
+</body>
+</html>
