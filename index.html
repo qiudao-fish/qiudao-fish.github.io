@@ -60,7 +60,7 @@
             var markers = new BMap.Marker(points);
             map.addOverlay(markers);
         }
-        
+
         var detail = document.getElementById("detail");
         var watchID;
         var d1, d2;
@@ -75,21 +75,37 @@
             detail.innerHTML += "实时更新位置已停止。<br><br>";
         }
         function showPostion(position) {
-            var content = "定位信息如下：<br>";
+            var content = "<br>定位信息如下：<br>";
             var now = new Date();
             var l1, l2;
             l1 = position.coords.longitude; l2 = position.coords.latitude;
-            var points = new BMap.Point(l1, l2);//创建坐标点
-            markerFun(points);
-            content += "本次更新时间" + now.toLocaleString() + "<br>";
-            content += "纬度：" + position.coords.latitude + "<br>";
-            content += "经度：" + position.coords.longitude + "<br>";
-            // content += "位置精确度：" + position.coords.accuracy + "<br>";
-            // content += "海拔：" + position.coords.altitude + "米<br>";
-            // content += "海拔精度：" + position.coords.altitudeAccuracy + "<br>";
-            // content += "方向：" + position.coords.heading + "<br>";
-            // content += "速度：" + position.coords.speed + "m/s";
-            detail.innerHTML += content;
+            // var points = new BMap.Point(l1, l2);//创建坐标点
+            // markerFun(points);
+            var geolocation = new BMap.Geolocation();
+            geolocation.getCurrentPosition(function (r) {
+                if (this.getStatus() == BMAP_STATUS_SUCCESS) {
+                    var mk = new BMap.Marker(r.point);
+                    map.addOverlay(mk);
+                    map.panTo(r.point);
+                    //alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+                    content += "本次更新时间" + now.toLocaleString() + "<br>";
+                    content += "纬度：" + r.point.lat + "<br>";
+                    content += "经度：" + r.point.lng + "<br>";
+                    // content += "位置精确度：" + position.coords.accuracy + "<br>";
+                    // content += "海拔：" + position.coords.altitude + "米<br>";
+                    // content += "海拔精度：" + position.coords.altitudeAccuracy + "<br>";
+                    // content += "方向：" + position.coords.heading + "<br>";
+                    // content += "速度：" + position.coords.speed + "m/s";
+                    detail.innerHTML += content;
+                }
+                else {
+                    alert('failed' + this.getStatus());
+                }
+            }, { enableHighAccuracy: true });
+            
+            
+            
+            
 
         }
         function showError(error) {
@@ -127,8 +143,8 @@
         }
         var options = {
             enableHighAccuracy: true,
-            maximumAge: 2000,
-            timeout: 2000
+            maximumAge: 20000,
+            timeout: 20000
         };
     </script>
 </body>
