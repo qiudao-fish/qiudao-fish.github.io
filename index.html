@@ -1,37 +1,86 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="gbk">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #container {
+            width: 1300px;
+            height: 600px;
+            border: 1px solid #999;
+        }
+    </style>
+    <script src="http://api.map.baidu.com/getscript?v=2.0&ak=w8iscpj5vrApP7BVsPz6LI0ZInD6mjkJ"></script>
 </head>
+
 <body>
     <h1>地理定位API</h1>
     <hr>
+    <div id="container"></div>
     <div>
         <button id="btn" onclick="process()">开始记录</button>
-        <button onclick="stop()">停止获取位置</button>
     </div>
     <div id="detail">
         地理位置信息会显示在这里
     </div>
-    <script src="http://api.map.baidu.com/getscript?v=2.0&ak=w8iscpj5vrApP7BVsPz6LI0ZInD6mjkJ">
+
+    <script>
+        //1.创建地图实例
+        var map = new BMap.Map("container");
+
+        //2.设置中心点坐标  BMap命名空间下的Point类来创建一个坐标点
+        var point = new BMap.Point(119.515, 32.199);
+
+        //3.地图初始化，同时设置地图展示级别  (3-19)
+        map.centerAndZoom(point, 15);
+
+        //4.鼠标滚轮  开启鼠标滚轮缩放
+        map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+
+        //5.添加控件
+        //平移缩放控件 NavigationControl   PC端默认位于地图左上方，它包含控制地图的平移和缩放的功能
+        map.addControl(new BMap.NavigationControl());
+
+        //比例尺 ScaleControl 默认位于地图左下方，显示地图的比例关系
+        map.addControl(new BMap.ScaleControl());
+
+        //缩略地图 OverviewMapControl	默认位于地图右下方，是一个可折叠的缩略地图
+        map.addControl(new BMap.OverviewMapControl());
+
+        //地图类型	MapTypeControl	默认位于地图右上方
+        map.addControl(new BMap.MapTypeControl());
+        var opts = {
+            anchor: BMAP_ANCHOR_TOP_RIGHT, //位置
+            type: BMAP_NAVIGATION_CONTROL_SMALL //类型
+        }
+        map.addControl(new BMap.NavigationControl(opts));
+        function markerFun(points) {
+            var markers = new BMap.Marker(points);
+            map.addOverlay(markers);
+        }
+        
         var detail = document.getElementById("detail");
         var watchID;
-        if(!navigator.geolocation){
+        var d1, d2;
+        if (!navigator.geolocation) {
             detail.innerHTML = "对不起，您的浏览器不支持HTML5地理定位API";
-                
-            }
-        function start(){
+        }
+        function start() {
             watchID = navigator.geolocation.watchPosition(showPostion, showError, options);
         }
-        function stop(){
+        function stop() {
             navigator.geolocation.clearWatch(watchID);
             detail.innerHTML += "实时更新位置已停止。<br><br>";
         }
-        function showPostion(position){
+        function showPostion(position) {
             var content = "定位信息如下：<br>";
             var now = new Date();
+            var l1, l2;
+            l1 = position.coords.longitude; l2 = position.coords.latitude;
+            var points = new BMap.Point(l1, l2);//创建坐标点
+            markerFun(points);
             content += "本次更新时间" + now.toLocaleString() + "<br>";
             content += "纬度：" + position.coords.latitude + "<br>";
             content += "经度：" + position.coords.longitude + "<br>";
@@ -41,9 +90,10 @@
             // content += "方向：" + position.coords.heading + "<br>";
             // content += "速度：" + position.coords.speed + "m/s";
             detail.innerHTML += content;
+
         }
-        function showError(error){
-            switch(error.code){
+        function showError(error) {
+            switch (error.code) {
                 case error.PERMISSION_DENIED:
                     detail.innerHTML = "用户拒绝了地理定位的请求。";
                     break;
@@ -58,16 +108,16 @@
                     break;
             }
         }
-        function process(){
+        function process() {
             var btn = document.getElementById("btn");
             var now = new Date();
-            var d1, d2;
+
             var m1, m2;
-            if(btn.innerHTML == "开始记录"){
+            if (btn.innerHTML == "开始记录") {
                 start();
                 btn.innerHTML = "停止记录";
                 d1 = now.toLocaleString();
-            }else if(btn.innerHTML == "停止记录"){
+            } else if (btn.innerHTML == "停止记录") {
                 stop();
                 btn.innerHTML = "开始记录";
                 d2 = now.toLocaleString();
@@ -76,10 +126,11 @@
             }
         }
         var options = {
-            enableHighAccuracy : true,
-            maximumAge : 2000,
-            timeout : 2000
+            enableHighAccuracy: true,
+            maximumAge: 2000,
+            timeout: 2000
         };
     </script>
 </body>
+
 </html>
